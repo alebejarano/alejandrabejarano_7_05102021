@@ -20,5 +20,6 @@ export class CreatedUserResponseDto {
 //Modify the user info
 export class ModifiedUserDto {
   name: string;
+  mail: string;
   password: string;
 }

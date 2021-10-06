@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import {
   //CreatedUserResponseDto,
   //CreateUserDto,
@@ -6,7 +6,7 @@ import {
   UsersResponseDto,
 } from './dto/users.dto';
 import { UsersService } from './users.service';
-import { Users } from './interface/users.interface';
+//import { Users } from './interface/users.interface';
 
 //Controllers are responsible for handling incoming requests and returning responses to the client.
 //A controller's purpose is to receive specific requests for the application.
@@ -23,15 +23,21 @@ export class UsersController {
   ): Promise<UsersResponseDto> {
     return this.usersService.findById(userId);
   }
-  @Post()
+  /*@Post()
   createUser(@Body() body: Users): Users {
     return this.usersService.createUser(body);
-  }
+  }*/
   @Patch('/userId')
   async modifyUser(
     @Param('userId') userId,
-    @Body() body: ModifiedUserDto,
+    @Body() data: ModifiedUserDto,
   ): Promise<UsersResponseDto> {
-    return this.usersService.updateUser(body, userId);
+    const updatedUser = await this.usersService.updateUser(userId, data);
+    return { id: updatedUser.id, name: updatedUser.name };
+  }
+  @Delete('/:userId')
+  async deleteUser(@Param('userId') userId): Promise<UsersResponseDto> {
+    const deletedUser = await this.usersService.deleteUser(userId);
+    return { id: deletedUser.id, name: deletedUser.name };
   }
 }
