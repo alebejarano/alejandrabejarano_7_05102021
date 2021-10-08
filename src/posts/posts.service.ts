@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateAndModifyPostDto } from './dto/posts.dto';
 import { Post } from './post.entity';
 
 @Injectable()
@@ -23,17 +24,23 @@ export class PostsService {
     }
   }
   //Create one post
-  createPost(post: string): Promise<Post> {
-    const newPost = this.postsRepository.create({ post });
+  createPost(body: CreateAndModifyPostDto): Promise<Post> {
+    const newPost = this.postsRepository.create({
+      post_content: body.post_content,
+      user_id: 'test',
+    });
     return this.postsRepository.save(newPost);
   }
-  //Update one post
-  async updatePost(postId: string, post: string): Promise<Post> {
+  //Modify one post
+  async updatePost(
+    postId: string,
+    body: CreateAndModifyPostDto,
+  ): Promise<Post> {
     const updatePost = await this.findById(postId);
-    updatePost.post = post;
+    body.post_content;
     return this.postsRepository.save(updatePost);
   }
-  //Delet one post
+  //Delete one post
   async deletePost(postId: string): Promise<Post> {
     const postToDelete = await this.findById(postId);
     return this.postsRepository.remove(postToDelete);

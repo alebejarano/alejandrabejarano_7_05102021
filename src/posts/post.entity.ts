@@ -9,7 +9,7 @@ export class Post {
   user_id: string;
 
   @Column()
-  post: string;
+  post_content: string;
 
   //@Column()
   //file

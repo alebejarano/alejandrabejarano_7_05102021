@@ -1,12 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import {
-  //CreatedUserResponseDto,
-  //CreateUserDto,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import {
+  CreatedUserResponseDto,
+  CreateUserDto,
   ModifiedUserDto,
   UsersResponseDto,
 } from './dto/users.dto';
 import { UsersService } from './users.service';
-//import { Users } from './interface/users.interface';
 
 //Controllers are responsible for handling incoming requests and returning responses to the client.
 //A controller's purpose is to receive specific requests for the application.
@@ -23,10 +30,18 @@ export class UsersController {
   ): Promise<UsersResponseDto> {
     return this.usersService.findById(userId);
   }
-  /*@Post()
-  createUser(@Body() body: Users): Users {
-    return this.usersService.createUser(body);
-  }*/
+  @Post()
+  async createUser(
+    @Body() body: CreateUserDto,
+  ): Promise<CreatedUserResponseDto> {
+    const newUser = await this.usersService.createUser(body);
+    return {
+      id: newUser.id,
+      name: newUser.name,
+      mail: newUser.mail,
+      token: 'vgfvfc',
+    };
+  }
   @Patch('/userId')
   async modifyUser(
     @Param('userId') userId,
