@@ -33,6 +33,7 @@ export class PostsController {
     const newPost = await this.postsService.createPost(body);
     return newPost;
   }
+  //Modify on post
   @Patch('/:postId')
   async modifyPost(
     @Param('postId') postId: string,
@@ -41,6 +42,7 @@ export class PostsController {
     const modifiedPost = await this.postsService.updatePost(postId, body);
     return modifiedPost;
   }
+  //To delete one post
   @Delete('/:postId')
   async deletePost(@Param('postId') postId: string): Promise<PostsResponseDto> {
     const deletedPost = await this.postsService.deletePost(postId);
