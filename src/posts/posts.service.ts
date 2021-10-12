@@ -15,7 +15,7 @@ export class PostsService {
     return this.postsRepository.find();
   }
   //find one post by Id
-  async findById(postId: string): Promise<Post> {
+  async findById(postId: number): Promise<Post> {
     try {
       const post = await this.postsRepository.findOneOrFail(postId);
       return post;
@@ -27,13 +27,13 @@ export class PostsService {
   createPost(body: CreateAndModifyPostDto): Promise<Post> {
     const newPost = this.postsRepository.create({
       post_content: body.post_content,
-      user_id: 'test',
+      user_id: 3,
     });
     return this.postsRepository.save(newPost);
   }
   //Modify one post
   async updatePost(
-    postId: string,
+    postId: number,
     body: CreateAndModifyPostDto,
   ): Promise<Post> {
     const updatePost = await this.findById(postId);
@@ -41,7 +41,7 @@ export class PostsService {
     return this.postsRepository.save(updatePost);
   }
   //Delete one post
-  async deletePost(postId: string): Promise<Post> {
+  async deletePost(postId: number): Promise<Post> {
     const postToDelete = await this.findById(postId);
     return this.postsRepository.remove(postToDelete);
   }

@@ -1,7 +1,7 @@
 //Get all posts or get one post
 export class PostsResponseDto {
-  id: string;
-  user_id: string;
+  id: number;
+  user_id: number;
   post_content: string;
   //file
 }

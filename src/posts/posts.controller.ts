@@ -21,7 +21,7 @@ export class PostsController {
   //Fin a post by its Id, pass the logic to service via findById()
   @Get('/:postId')
   async getPostById(
-    @Param('postId') postId: string,
+    @Param('postId') postId: number,
   ): Promise<PostsResponseDto> {
     return this.postsService.findById(postId);
   }
@@ -36,7 +36,7 @@ export class PostsController {
   //Modify on post
   @Patch('/:postId')
   async modifyPost(
-    @Param('postId') postId: string,
+    @Param('postId') postId: number,
     @Body() body: CreateAndModifyPostDto,
   ): Promise<PostsResponseDto> {
     const modifiedPost = await this.postsService.updatePost(postId, body);
@@ -44,7 +44,7 @@ export class PostsController {
   }
   //To delete one post
   @Delete('/:postId')
-  async deletePost(@Param('postId') postId: string): Promise<PostsResponseDto> {
+  async deletePost(@Param('postId') postId: number): Promise<PostsResponseDto> {
     const deletedPost = await this.postsService.deletePost(postId);
     return deletedPost;
   }
