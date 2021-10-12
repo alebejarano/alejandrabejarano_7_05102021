@@ -35,7 +35,8 @@ export class UsersController {
   async createUser(
     @Body() body: CreateUserDto,
   ): Promise<CreatedUserResponseDto> {
-    body.password = await bcrypt.hash(body.password, 10);
+    const password = body.password;
+    body.password = await bcrypt.hash(password, 10);
     const newUser = await this.usersService.createUser(body);
     return {
       id: newUser.id,
