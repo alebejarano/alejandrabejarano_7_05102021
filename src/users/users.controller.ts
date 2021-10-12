@@ -14,6 +14,7 @@ import {
   UsersResponseDto,
 } from './dto/users.dto';
 import { UsersService } from './users.service';
+import * as bcrypt from 'bcrypt';
 
 //Controllers are responsible for handling incoming requests and returning responses to the client.
 //A controller's purpose is to receive specific requests for the application.
@@ -34,6 +35,7 @@ export class UsersController {
   async createUser(
     @Body() body: CreateUserDto,
   ): Promise<CreatedUserResponseDto> {
+    body.password = await bcrypt.hash(body.password, 10);
     const newUser = await this.usersService.createUser(body);
     return {
       id: newUser.id,
