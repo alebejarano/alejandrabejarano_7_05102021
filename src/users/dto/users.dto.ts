@@ -7,19 +7,19 @@ export class UsersResponseDto {
 //create user. When signing up
 export class CreateUserDto {
   name: string;
-  mail: string;
+  email: string;
   password: string;
 }
 //Response Dto when user has been created
 export class CreatedUserResponseDto {
   id: string;
   name: string;
-  mail: string;
+  email: string;
   token: string;
 }
 //Modify the user info
 export class ModifiedUserDto {
   name: string;
-  mail: string;
+  email: string;
   password: string;
 }

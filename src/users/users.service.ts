@@ -23,6 +23,11 @@ export class UsersService {
       throw err;
     }
   }
+  //This will be for the authentification process in auth service
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.usersRepository.findOne(email);
+    return user;
+  }
 
   createUser(data: CreateUserDto): Promise<User> {
     const newUser = this.usersRepository.create(data);
@@ -32,7 +37,7 @@ export class UsersService {
   async updateUser(userId: string, data: ModifiedUserDto): Promise<User> {
     const updateUser = await this.findById(userId);
     updateUser.name = data.name;
-    updateUser.mail = data.mail;
+    updateUser.email = data.email;
     updateUser.password = data.password;
 
     return this.usersRepository.save(updateUser);

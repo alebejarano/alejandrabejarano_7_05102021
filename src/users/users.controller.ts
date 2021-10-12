@@ -38,7 +38,7 @@ export class UsersController {
     return {
       id: newUser.id,
       name: newUser.name,
-      mail: newUser.mail,
+      email: newUser.email,
       token: 'vgfvfc',
     };
   }
