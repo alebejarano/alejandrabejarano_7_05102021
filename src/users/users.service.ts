@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto, ModifiedUserDto } from './dto/users.dto';
-export type UserTest = any;
 
 @Injectable()
 export class UsersService {
@@ -11,23 +10,6 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
-
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
-
-  async findOne(username: string): Promise<UserTest | undefined> {
-    return this.users.find((user) => user.username === username);
-  }
 
   findAll(): Promise<User[]> {
     return this.usersRepository.find(); //SELECT * from user
