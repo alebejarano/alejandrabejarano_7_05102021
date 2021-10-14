@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Delete,
+  //forwardRef,
   Get,
+  //Inject,
   Param,
   Patch,
   Post,
@@ -15,12 +17,16 @@ import {
 } from './dto/users.dto';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from 'src/auth/auth.service';
 
 //Controllers are responsible for handling incoming requests and returning responses to the client.
 //A controller's purpose is to receive specific requests for the application.
 @Controller('users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService,
+  ) {}
   @Get()
   async getAllUsers(): Promise<UsersResponseDto[]> {
     return this.usersService.findAll();
@@ -38,11 +44,12 @@ export class UsersController {
     const password = body.password;
     body.password = await bcrypt.hash(password, 10);
     const newUser = await this.usersService.createUser(body);
+    const login = await this.authService.login(newUser);
     return {
       id: newUser.id,
       name: newUser.name,
       email: newUser.email,
-      token: 'vgfvfc',
+      token: login.access_token,
     };
   }
   @Patch('/userId')

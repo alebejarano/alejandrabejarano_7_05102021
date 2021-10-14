@@ -7,6 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { config } from './config';
 import { DatabaseConfig } from './database.config';
 import { AppController } from './app.controller';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/constants';
 
 @Module({
   imports: [
@@ -18,9 +20,13 @@ import { AppController } from './app.controller';
       imports: [ConfigModule],
       useClass: DatabaseConfig,
     }),
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '60s' },
+    }),
+    AuthModule,
     UsersModule,
     PostsModule,
-    AuthModule,
   ],
   controllers: [AppController],
 })
