@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -21,7 +22,7 @@ export class PostsController {
   //Fin a post by its Id, pass the logic to service via findById()
   @Get('/:postId')
   async getPostById(
-    @Param('postId') postId: number,
+    @Param('postId', ParseIntPipe) postId: number,
   ): Promise<PostsResponseDto> {
     return this.postsService.findById(postId);
   }

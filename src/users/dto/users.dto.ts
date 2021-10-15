@@ -36,9 +36,16 @@ export class CreateUserDto {
 }
 //Response Dto when user has been created
 export class CreatedUserResponseDto {
+  @IsNumber()
   id: number;
+
+  @IsString()
   name: string;
+
+  @IsEmail()
   email: string;
+
+  @IsString()
   token: string;
 }
 //Update the user info
