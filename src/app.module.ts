@@ -7,8 +7,10 @@ import { ConfigModule } from '@nestjs/config';
 import { config } from './config';
 import { DatabaseConfig } from './database.config';
 import { AppController } from './app.controller';
-import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './auth/constants';
+//import { JwtModule } from '@nestjs/jwt';
+//import { jwtConstants } from './auth/constants';
+
+//const jwtSecret = process.env.JWT_SECRET;
 
 @Module({
   imports: [
@@ -19,10 +21,6 @@ import { jwtConstants } from './auth/constants';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useClass: DatabaseConfig,
-    }),
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
     }),
     AuthModule,
     UsersModule,

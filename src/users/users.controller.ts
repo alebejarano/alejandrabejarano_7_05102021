@@ -6,6 +6,7 @@ import {
   Get,
   //Inject,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
@@ -33,7 +34,7 @@ export class UsersController {
   }
   @Get('/:userId')
   async getUserById(
-    @Param('userId') userId: number,
+    @Param('userId', ParseIntPipe) userId: number,
   ): Promise<UsersResponseDto> {
     return this.usersService.findById(userId);
   }
