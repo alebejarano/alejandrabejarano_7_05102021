@@ -53,9 +53,9 @@ export class UsersController {
       token: login.access_token,
     };
   }
-  @Patch('/userId')
+  @Patch('/:userId')
   async modifyUser(
-    @Param('userId') userId,
+    @Param('userId') userId: number,
     @Body() data: UpdatedUserDto,
   ): Promise<UsersResponseDto> {
     const updatedUser = await this.usersService.updateUser(userId, data);
