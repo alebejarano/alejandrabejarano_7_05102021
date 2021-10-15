@@ -13,7 +13,7 @@ import {
 import {
   CreatedUserResponseDto,
   CreateUserDto,
-  ModifiedUserDto,
+  UpdatedUserDto,
   UsersResponseDto,
 } from './dto/users.dto';
 import { UsersService } from './users.service';
@@ -56,7 +56,7 @@ export class UsersController {
   @Patch('/userId')
   async modifyUser(
     @Param('userId') userId,
-    @Body() data: ModifiedUserDto,
+    @Body() data: UpdatedUserDto,
   ): Promise<UsersResponseDto> {
     const updatedUser = await this.usersService.updateUser(userId, data);
     return { id: updatedUser.id, name: updatedUser.name };
