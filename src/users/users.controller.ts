@@ -56,6 +56,8 @@ export class UsersController {
     @Param('userId') userId: number,
     @Body() data: UpdatedUserDto,
   ): Promise<UsersResponseDto> {
+    const password = data.password;
+    data.password = await bcrypt.hash(password, 10);
     const updatedUser = await this.usersService.updateUser(userId, data);
     return { id: updatedUser.id, name: updatedUser.name };
   }

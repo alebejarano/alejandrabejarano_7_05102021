@@ -6,15 +6,16 @@ export class PostsResponseDto {
   id: number;
 
   @IsNumber()
-  user_id: number;
+  userId: number;
 
   @IsString()
-  post_content: string;
-  //file
+  content: string;
 }
 //Create one post or modify one post
 export class CreateAndModifyPostDto {
+  userId: any;
+
   @IsString()
-  post_content: string;
+  content: string;
   //file
 }

@@ -7,10 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { config } from './config';
 import { DatabaseConfig } from './database.config';
 import { AppController } from './app.controller';
-//import { JwtModule } from '@nestjs/jwt';
-//import { jwtConstants } from './auth/constants';
-
-//const jwtSecret = process.env.JWT_SECRET;
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -21,6 +18,9 @@ import { AppController } from './app.controller';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useClass: DatabaseConfig,
+    }),
+    MulterModule.register({
+      dest: './files',
     }),
     AuthModule,
     UsersModule,

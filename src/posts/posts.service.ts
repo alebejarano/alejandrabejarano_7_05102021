@@ -26,8 +26,8 @@ export class PostsService {
   //Create one post
   createPost(body: CreateAndModifyPostDto): Promise<Post> {
     const newPost = this.postsRepository.create({
-      post_content: body.post_content,
-      user_id: 3,
+      userId: body.userId,
+      content: body.content,
     });
     return this.postsRepository.save(newPost);
   }
@@ -37,7 +37,7 @@ export class PostsService {
     body: CreateAndModifyPostDto,
   ): Promise<Post> {
     const updatePost = await this.findById(postId);
-    body.post_content;
+    body.content;
     return this.postsRepository.save(updatePost);
   }
   //Delete one post

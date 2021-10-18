@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Post {
@@ -6,11 +7,15 @@ export class Post {
   id: number;
 
   @Column()
-  user_id: number;
+  userId: number;
 
   @Column()
-  post_content: string;
+  content: string;
 
   //@Column()
   //file
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ManyToOne((type) => User, (user) => user.posts)
+  user: User;
 }
