@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 //Get all posts or get one post
 export class PostsResponseDto {
@@ -9,7 +9,10 @@ export class PostsResponseDto {
   userId: number;
 
   @IsString()
+  @IsNotEmpty()
   content: string;
+
+  file?: any;
 }
 //Create one post or modify one post
 export class CreateAndModifyPostDto {
@@ -17,5 +20,6 @@ export class CreateAndModifyPostDto {
 
   @IsString()
   content: string;
-  //file
+
+  file?: any;
 }

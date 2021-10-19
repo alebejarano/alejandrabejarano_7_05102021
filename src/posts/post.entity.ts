@@ -12,8 +12,8 @@ export class Post {
   @Column()
   content: string;
 
-  //@Column()
-  //file
+  @Column()
+  file?: string;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ManyToOne((type) => User, (user) => user.posts)
