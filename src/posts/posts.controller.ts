@@ -20,6 +20,7 @@ import { PostsService } from './posts.service';
 import { Express } from 'express';
 import { diskStorage } from 'multer';
 import { editFilename, imageFileFilter } from 'src/file-upload.utils';
+import * as fs from 'fs';
 
 @Controller('posts')
 @UseGuards(JwtAuthGuard)
@@ -37,7 +38,7 @@ export class PostsController {
   ): Promise<PostsResponseDto> {
     return this.postsService.findById(postId);
   }
-  //Create one post
+  //Create one post and upload one file
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {
@@ -81,6 +82,15 @@ export class PostsController {
   //To delete one post
   @Delete('/:postId')
   async deletePost(@Param('postId') postId: number): Promise<PostsResponseDto> {
+    const post = await this.postsService.findById(postId);
+    const path = `./files/${post.file}`;
+    fs.unlink(path, (err) => {
+      if (err) {
+        throw err;
+      } else {
+        console.log('"Successfully deleted the file."');
+      }
+    });
     const deletedPost = await this.postsService.deletePost(postId);
     return deletedPost;
   }
