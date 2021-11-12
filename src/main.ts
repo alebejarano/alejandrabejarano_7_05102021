@@ -5,7 +5,7 @@ import * as helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const configService = app.get(ConfigService);
   const port = configService.get('PORT');
   app.useGlobalPipes(new ValidationPipe());
