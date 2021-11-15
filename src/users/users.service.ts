@@ -31,7 +31,8 @@ export class UsersService {
 
   createUser(data: CreateUserDto): Promise<User> {
     const newUser = this.usersRepository.create(data);
-    return this.usersRepository.save(newUser); // Insert the new user to the database
+    // Insert the new user to the database
+    return this.usersRepository.save(newUser);
   }
 
   async updateUser(userId: number, data: UpdatedUserDto): Promise<User> {

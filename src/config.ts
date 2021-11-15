@@ -1,6 +1,7 @@
 import { Post } from './posts/post.entity';
 import { User } from './users/user.entity';
 
+//configuration file, that return an object
 export const config = () => ({
   database: {
     type: 'mysql',

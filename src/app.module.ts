@@ -11,6 +11,7 @@ import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
+    //load and parse a .env file
     ConfigModule.forRoot({
       isGlobal: true,
       load: [config],
