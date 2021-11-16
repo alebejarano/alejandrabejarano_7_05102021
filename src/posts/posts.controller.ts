@@ -54,11 +54,18 @@ export class PostsController {
     @Body()
     body: CreateAndModifyPostDto,
   ): Promise<PostsResponseDto> {
-    const newPost = await this.postsService.createPost({
+    const data = {
+      //here i take the id of the user that is logedin
       userId: req.user.id,
       content: body.content,
-      file: file.filename,
-    });
+    };
+    if (file) {
+      Object.assign(data, {
+        file: file.filename,
+      });
+    }
+    const newPost = await this.postsService.createPost(data);
+
     return newPost;
   }
 

@@ -7,6 +7,10 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UploadedFile,
+  Request,
+  UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import {
   CreatedUserResponseDto,
@@ -14,13 +18,19 @@ import {
   UpdatedUserDto,
   UsersResponseDto,
 } from './dto/users.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
+import { diskStorage } from 'multer';
+import { editFilename, imageFileFilter } from 'src/file-upload.utils';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/auth/auth.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 //Controllers are responsible for handling incoming requests and returning responses to the client.
 //A controller's purpose is to receive specific requests for the application.
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(
     private usersService: UsersService,
@@ -51,6 +61,27 @@ export class UsersController {
       token: login.access_token,
     };
   }
+  //to upload a profile pic
+  @Post('/pic')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './files',
+        filename: editFilename,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  async uploadProfilePic(
+    @Request() req,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<string> {
+    const newPic = await this.usersService.UpdateProfilePic(
+      req.user.id,
+      file.filename,
+    );
+    return newPic;
+  }
   @Patch('/:userId')
   async modifyUser(
     @Param('userId') userId: number,
@@ -61,6 +92,15 @@ export class UsersController {
     const updatedUser = await this.usersService.updateUser(userId, data);
     return { id: updatedUser.id, name: updatedUser.name };
   }
+
+  //to delete the profile pic
+  @Delete('/pic')
+  async deletePic(@Request() req): Promise<any> {
+    console.log(req.user.id);
+    const deletedPic = await this.usersService.deleteProfilePic(req.user.id);
+    return deletedPic;
+  }
+
   @Delete('/:userId')
   async deleteUser(@Param('userId') userId): Promise<UsersResponseDto> {
     const deletedUser = await this.usersService.deleteUser(userId);

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto, UpdatedUserDto } from './dto/users.dto';
+import * as fs from 'fs';
 
 @Injectable()
 export class UsersService {
@@ -44,8 +45,49 @@ export class UsersService {
     return this.usersRepository.save(updateUser);
   }
 
+  async UpdateProfilePic(userId: number, filename: string): Promise<string> {
+    const user = await this.findById(userId);
+    /*if statement to check if the user already has a profile pic,
+    and has a different filename we remove it;
+    (if same filename it will be overwritten by multer, 
+    so no need to delete)*/
+    if (
+      user.profilePic &&
+      user.profilePic.length &&
+      filename !== user.profilePic
+    ) {
+      const path = `./files/${user.profilePic}`;
+      fs.unlink(path, (err) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log('"Successfully deleted the file."');
+        }
+      });
+    }
+    user.profilePic = filename;
+    this.usersRepository.save(user);
+    return filename;
+  }
+
   async deleteUser(userId: number): Promise<User> {
     const user = await this.findById(userId);
     return this.usersRepository.remove(user);
+  }
+
+  async deleteProfilePic(userId: number): Promise<User> {
+    const user = await this.findById(userId);
+    if (user.profilePic && user.profilePic.length) {
+      const path = `./files/${user.profilePic}`;
+      fs.unlink(path, (err) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log('"Successfully deleted the file."');
+        }
+      });
+    }
+    user.profilePic = '';
+    return this.usersRepository.save(user);
   }
 }

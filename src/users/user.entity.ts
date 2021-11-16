@@ -1,5 +1,12 @@
 import { Post } from 'src/posts/post.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  BeforeRemove,
+} from 'typeorm';
+import * as fs from 'fs';
 
 //Entity is a class that maps to a database table
 @Entity()
@@ -15,6 +22,23 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column()
+  profilePic?: string;
+
+  @BeforeRemove()
+  removeProfilePic() {
+    if (this.profilePic && this.profilePic.length) {
+      const path = `./files/${this.profilePic}`;
+      fs.unlink(path, (err) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log('"Successfully deleted the file."');
+        }
+      });
+    }
+  }
 
   @OneToMany(() => Post, (post) => post.userId)
   posts: Post[];

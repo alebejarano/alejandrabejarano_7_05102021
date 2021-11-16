@@ -24,17 +24,18 @@ export class Post {
 
   @BeforeRemove()
   removeFile() {
-    const path = `./files/${this.file}`;
-    fs.unlink(path, (err) => {
-      if (err) {
-        throw err;
-      } else {
-        console.log('"Successfully deleted the file."');
-      }
-    });
+    if (this.file && this.file.length) {
+      const path = `./files/${this.file}`;
+      fs.unlink(path, (err) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log('"Successfully deleted the file."');
+        }
+      });
+    }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  @ManyToOne((type) => User, (user) => user.posts)
+  @ManyToOne(() => User, (user) => user.posts)
   user: User;
 }

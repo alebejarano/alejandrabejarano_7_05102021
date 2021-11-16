@@ -28,7 +28,7 @@ export class PostsService {
     const newPost = this.postsRepository.create({
       userId: body.userId,
       content: body.content,
-      file: body.file,
+      file: body.file || '',
     });
     return this.postsRepository.save(newPost);
   }

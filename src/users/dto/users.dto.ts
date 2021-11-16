@@ -1,4 +1,6 @@
-//DTO (Data Transfer Object) schema. An object that defines how the data will be sent over the network. The data for the request and response.
+//DTO (Data Transfer Object) schema.
+//An object that defines how the data will be sent over the network.
+//The data for the request and response.
 import {
   IsEmail,
   IsNotEmpty,
@@ -16,6 +18,13 @@ export class UsersResponseDto {
 
   @IsString()
   name: string;
+
+  //profile pic
+  profilePic?: any;
+}
+//to upload a profile pic if wanted
+export class UserProfilPicDto {
+  profilePic?: any;
 }
 //create user. When signing up
 export class CreateUserDto {
