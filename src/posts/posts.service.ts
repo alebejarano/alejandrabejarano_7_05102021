@@ -35,32 +35,28 @@ export class PostsService {
   }
   //Modify one post and or the file
   async updatePost(
-    userId: number,
-    postId: number,
+    post: Post,
     filename: string,
     body: CreateAndModifyPostDto,
   ): Promise<any> {
-    const post = await this.findById(postId);
-    if (userId === post.userId) {
-      if (post.file && post.file.length && filename !== post.file) {
-        const path = `./files/${post.file}`;
-        fs.unlink(path, (err) => {
-          if (err) {
-            throw err;
-          } else {
-            console.log('"Successfully deleted the file."');
-          }
-        });
-      }
-      //update the file and content for the new one
-      post.file = filename;
-      post.content = body.content;
-      return this.postsRepository.save(post);
-    }
     /*if statement to check if the user already has uploaded a file,
     and if it has a different filename we remove it;
     (if same filename it will be overwritten by multer, 
     so no need to delete)*/
+    if (post.file && post.file.length && filename !== post.file) {
+      const path = `./files/${post.file}`;
+      fs.unlink(path, (err) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log('"Successfully deleted the file."');
+        }
+      });
+    }
+    //update the file and content for the new one
+    post.file = filename;
+    post.content = body.content;
+    return this.postsRepository.save(post);
   }
   //Delete one post
   async deletePost(postId: number): Promise<Post> {

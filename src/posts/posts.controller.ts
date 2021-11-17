@@ -12,6 +12,8 @@ import {
   UploadedFile,
   UseInterceptors,
   Res,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -94,13 +96,17 @@ export class PostsController {
     @Body()
     body: CreateAndModifyPostDto,
   ): Promise<any> {
-    const modifiedPost = await this.postsService.updatePost(
-      req.user.id,
-      postId,
-      file.filename,
-      body,
-    );
-    return modifiedPost;
+    const post = await this.postsService.findById(postId);
+    if (req.user.id === post.userId) {
+      const modifiedPost = await this.postsService.updatePost(
+        post,
+        file.filename,
+        body,
+      );
+      return modifiedPost;
+    } else {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
   }
   //To delete one post
   @Delete('/:postId')
