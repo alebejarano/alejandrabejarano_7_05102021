@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 //Get all posts or get one post
 export class PostsResponseDto {
@@ -9,7 +9,6 @@ export class PostsResponseDto {
   userId: number;
 
   @IsString()
-  @IsNotEmpty()
   content: string;
 
   file?: any;

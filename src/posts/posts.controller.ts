@@ -76,13 +76,30 @@ export class PostsController {
     return res.sendFile(file, { root: './files' });
   }
 
-  //Modify on post
+  //Modify one post and or the file
   @Patch('/:postId')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './files',
+        filename: editFilename,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
   async modifyPost(
-    @Param('postId') postId: number,
-    @Body() body: CreateAndModifyPostDto,
-  ): Promise<PostsResponseDto> {
-    const modifiedPost = await this.postsService.updatePost(postId, body);
+    @Request() req,
+    @Param('postId') postId,
+    @UploadedFile() file: Express.Multer.File,
+    @Body()
+    body: CreateAndModifyPostDto,
+  ): Promise<any> {
+    const modifiedPost = await this.postsService.updatePost(
+      req.user.id,
+      postId,
+      file.filename,
+      body,
+    );
     return modifiedPost;
   }
   //To delete one post
