@@ -20,11 +20,11 @@ export class UsersResponseDto {
   name: string;
 
   //profile pic
-  profilePic?: any;
+  profilePic?: any = '';
 }
 //to upload a profile pic if wanted
-export class UserProfilPicDto {
-  profilePic?: any;
+export class UserProfilePicDto {
+  profilePic?: any = '';
 }
 //create user. When signing up
 export class CreateUserDto {

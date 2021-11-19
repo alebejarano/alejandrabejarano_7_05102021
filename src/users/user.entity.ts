@@ -24,7 +24,7 @@ export class User {
   password: string;
 
   @Column()
-  profilePic?: string;
+  profilePic?: string = '';
 
   @BeforeRemove()
   removeProfilePic() {
