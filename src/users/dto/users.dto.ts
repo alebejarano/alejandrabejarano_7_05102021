@@ -55,7 +55,7 @@ export class CreatedUserResponseDto {
   email: string;
 
   @IsString()
-  token: string;
+  access_token: string;
 }
 //Update the user info
 export class UpdatedUserDto extends PartialType(CreateUserDto) {}

@@ -29,7 +29,7 @@ export class UsersController {
       id: newUser.id,
       name: newUser.name,
       email: newUser.email,
-      token: login.access_token,
+      access_token: login.access_token,
     };
   }
 }
