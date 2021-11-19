@@ -62,6 +62,7 @@ export class PostsController {
       content: body.content,
     };
     if (file) {
+      //attached file to the data
       Object.assign(data, {
         file: file.filename,
       });

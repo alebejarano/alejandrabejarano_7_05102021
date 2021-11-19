@@ -29,6 +29,7 @@ export class PostsService {
     const newPost = this.postsRepository.create({
       userId: body.userId,
       content: body.content,
+      //file is optional to create a post
       file: body.file || '',
     });
     return this.postsRepository.save(newPost);
@@ -61,8 +62,10 @@ export class PostsService {
   //Delete file from post
   async deleteFile(postId: number): Promise<Post> {
     const post = await this.findById(postId);
+    //check if there is a file
     if (post.file && post.file.length) {
       const path = `./files/${post.file}`;
+      //if there is a file delete it from folder
       fs.unlink(path, (err) => {
         if (err) {
           throw err;
@@ -70,8 +73,11 @@ export class PostsService {
           console.log('"Successfully deleted the file."');
         }
       });
+    } else {
+      console.log('no file to delete');
     }
     post.file = '';
+    //return the post with no file
     return this.postsRepository.save(post);
   }
   //Delete one post
