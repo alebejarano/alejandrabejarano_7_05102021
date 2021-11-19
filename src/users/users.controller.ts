@@ -96,7 +96,6 @@ export class UsersController {
   //to delete the profile pic
   @Delete('/pic')
   async deletePic(@Request() req): Promise<any> {
-    console.log(req.user.id);
     const deletedPic = await this.usersService.deleteProfilePic(req.user.id);
     return deletedPic;
   }

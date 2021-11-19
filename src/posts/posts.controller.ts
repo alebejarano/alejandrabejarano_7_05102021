@@ -97,6 +97,7 @@ export class PostsController {
     body: CreateAndModifyPostDto,
   ): Promise<any> {
     const post = await this.postsService.findById(postId);
+    //check if the user who wans to modify the post is the one who created it
     if (req.user.id === post.userId) {
       const modifiedPost = await this.postsService.updatePost(
         post,
@@ -105,8 +106,15 @@ export class PostsController {
       );
       return modifiedPost;
     } else {
+      //if it is not the owner of the post
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
+  }
+  //To delete a file from post
+  @Delete('/:postId/pic')
+  async deletePostFile(@Param('postId') postId): Promise<any> {
+    const deletedFile = await this.postsService.deleteFile(postId);
+    return deletedFile;
   }
   //To delete one post
   @Delete('/:postId')

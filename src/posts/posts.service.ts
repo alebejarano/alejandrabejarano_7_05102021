@@ -58,6 +58,22 @@ export class PostsService {
     post.content = body.content;
     return this.postsRepository.save(post);
   }
+  //Delete file from post
+  async deleteFile(postId: number): Promise<Post> {
+    const post = await this.findById(postId);
+    if (post.file && post.file.length) {
+      const path = `./files/${post.file}`;
+      fs.unlink(path, (err) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log('"Successfully deleted the file."');
+        }
+      });
+    }
+    post.file = '';
+    return this.postsRepository.save(post);
+  }
   //Delete one post
   async deletePost(postId: number): Promise<Post> {
     const postToDelete = await this.findById(postId);
