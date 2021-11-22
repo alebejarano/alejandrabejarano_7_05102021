@@ -8,6 +8,7 @@ import { AuthService } from 'src/auth/auth.service';
 //A controller's purpose is to receive specific requests for the application.
 @Controller('users')
 //here is the route that does not need to be auth
+//for Creating a new user, in the signup page
 export class UsersController {
   constructor(
     private usersService: UsersService,
