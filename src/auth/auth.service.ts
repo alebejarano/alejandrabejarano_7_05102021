@@ -10,7 +10,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jtwService: JwtService,
   ) {}
-
+  //verify that the user has a valid email and compare the password
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
     if (user) {
@@ -22,11 +22,12 @@ export class AuthService {
     }
     return null;
   }
-
+  //for the user to login into his account
   async login(user: any) {
     const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jtwService.sign(payload),
+      user: user,
     };
   }
 }

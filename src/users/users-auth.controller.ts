@@ -19,7 +19,6 @@ import { diskStorage } from 'multer';
 import { editFilename, imageFileFilter } from 'src/file-upload.utils';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
-import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 //Controllers are responsible for handling incoming requests and returning responses to the client.
@@ -28,12 +27,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 //pass our JWT strategy for validating and extracting the token
 @UseGuards(JwtAuthGuard)
 export class UsersControllerAuth {
-  constructor(
-    private usersService: UsersService,
-    //we pass our authorization logic, validating users password
-    //and for login returning the token
-    private authService: AuthService,
-  ) {}
+  constructor(private usersService: UsersService) {}
   //find all users in our database
   @Get()
   async getAllUsers(): Promise<UsersResponseDto[]> {
