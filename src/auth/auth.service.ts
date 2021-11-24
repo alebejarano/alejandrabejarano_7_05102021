@@ -28,6 +28,12 @@ export class AuthService {
     return {
       access_token: this.jtwService.sign(payload),
       user: user,
+      /*user: 
+      "profilePic"
+      "id"
+      "name"
+      "email"
+      */
     };
   }
 }

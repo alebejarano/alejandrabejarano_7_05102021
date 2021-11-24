@@ -24,6 +24,7 @@ export class User {
   password: string;
 
   @Column()
+  //empty default value
   profilePic?: string = '';
 
   @BeforeRemove()
