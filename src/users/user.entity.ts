@@ -31,6 +31,7 @@ export class User {
   removeProfilePic() {
     if (this.profilePic && this.profilePic.length) {
       const path = `./files/${this.profilePic}`;
+      console.log('users entity');
       fs.unlink(path, (err) => {
         if (err) {
           throw err;

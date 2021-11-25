@@ -49,10 +49,12 @@ export class UsersControllerAuth {
     @Body() data: UpdatedUserDto,
   ): Promise<UsersResponseDto> {
     const password = data.password;
-    data.password = await bcrypt.hash(password, 10);
+    if (password) {
+      data.password = await bcrypt.hash(password, 10);
+    }
     const updatedUser = await this.usersService.updateUser(userId, data);
-    //we only return the id and the name
-    return { id: updatedUser.id, name: updatedUser.name };
+    //we only return the id, the name and the email
+    return updatedUser;
   }
   //to upload a profile pic
   @Post('/pic')
@@ -86,6 +88,6 @@ export class UsersControllerAuth {
   @Delete('/:userId')
   async deleteUser(@Param('userId') userId): Promise<UsersResponseDto> {
     const deletedUser = await this.usersService.deleteUser(userId);
-    return { id: deletedUser.id, name: deletedUser.name };
+    return deletedUser;
   }
 }

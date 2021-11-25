@@ -46,6 +46,7 @@ export class PostsService {
     so no need to delete)*/
     if (post.file && post.file.length && filename !== post.file) {
       const path = `./files/${post.file}`;
+      console.log('post service updatepost');
       fs.unlink(path, (err) => {
         if (err) {
           throw err;
@@ -66,6 +67,7 @@ export class PostsService {
     if (post.file && post.file.length) {
       const path = `./files/${post.file}`;
       //if there is a file delete it from folder
+      console.log('users service, deletefile');
       fs.unlink(path, (err) => {
         if (err) {
           throw err;

@@ -19,6 +19,9 @@ export class UsersResponseDto {
   @IsString()
   name: string;
 
+  @IsEmail({}, { message: 'Invalid email adress' })
+  email: string;
+
   //profile pic
   profilePic?: any = '';
 }

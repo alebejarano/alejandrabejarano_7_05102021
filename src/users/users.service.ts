@@ -58,6 +58,7 @@ export class UsersService {
       filename !== user.profilePic
     ) {
       const path = `./files/${user.profilePic}`;
+      console.log('users service, updateprofilepic');
       fs.unlink(path, (err) => {
         if (err) {
           throw err;
@@ -76,6 +77,7 @@ export class UsersService {
     //check if the user has a profile and if it does deletes the file
     if (user.profilePic && user.profilePic.length) {
       const path = `./files/${user.profilePic}`;
+      console.log('users service, delete profile pic');
       fs.unlink(path, (err) => {
         if (err) {
           throw err;

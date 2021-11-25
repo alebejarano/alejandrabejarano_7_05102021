@@ -26,6 +26,7 @@ export class Post {
   removeFile() {
     if (this.file && this.file.length) {
       const path = `./files/${this.file}`;
+      console.log('post entity');
       fs.unlink(path, (err) => {
         if (err) {
           throw err;
