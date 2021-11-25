@@ -37,13 +37,10 @@ export class UsersService {
   }
   //the user can modify his info
   async updateUser(userId: number, data: UpdatedUserDto): Promise<User> {
-    const updateUser = await this.findById(userId);
+    let user = await this.findById(userId);
     //update the user new info
-    updateUser.name = data.name;
-    updateUser.email = data.email;
-    updateUser.password = data.password;
-
-    return this.usersRepository.save(updateUser);
+    user = Object.assign(user, data);
+    return this.usersRepository.save(user);
   }
   //in the database we store as a string the path towards our file(object)
   async UpdateProfilePic(userId: number, filename: string): Promise<string> {

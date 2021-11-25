@@ -53,7 +53,6 @@ export class UsersControllerAuth {
       data.password = await bcrypt.hash(password, 10);
     }
     const updatedUser = await this.usersService.updateUser(userId, data);
-    //we only return the id, the name and the email
     return updatedUser;
   }
   //to upload a profile pic
