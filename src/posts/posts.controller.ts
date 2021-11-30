@@ -41,6 +41,23 @@ export class PostsController {
   }
   //Create one post and upload one file
   @Post()
+  async createPost(
+    @Request() req,
+    @Body()
+    body: CreateAndModifyPostDto,
+  ): Promise<PostsResponseDto> {
+    const data = {
+      //here i take the id of the user that is logedin
+      userId: req.user.id,
+      content: body.content,
+    };
+    const newPost = await this.postsService.createPost(data);
+
+    return newPost;
+  }
+
+  //Post just to handle photos send during create post
+  @Post('/images')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -50,26 +67,10 @@ export class PostsController {
       fileFilter: imageFileFilter,
     }),
   )
-  async createPost(
-    @Request() req,
-    @UploadedFile() file: Express.Multer.File,
-    @Body()
-    body: CreateAndModifyPostDto,
-  ): Promise<PostsResponseDto> {
-    const data = {
-      //here i take the id of the user that is logedin
-      userId: req.user.id,
-      content: body.content,
+  async uploadImage(@UploadedFile() file: Express.Multer.File): Promise<any> {
+    return {
+      url: `http://localhost:3000/file/${file.filename}`,
     };
-    if (file) {
-      //attached file to the data
-      Object.assign(data, {
-        file: file.filename,
-      });
-    }
-    const newPost = await this.postsService.createPost(data);
-
-    return newPost;
   }
 
   /*Get route which will take the imagepath as an argument 

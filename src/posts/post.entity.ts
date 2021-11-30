@@ -16,11 +16,11 @@ export class Post {
   @Column()
   userId: number;
 
-  @Column()
+  @Column({ length: 800 })
   content: string;
 
   @Column()
-  file?: string;
+  file?: string = '';
 
   @BeforeRemove()
   removeFile() {

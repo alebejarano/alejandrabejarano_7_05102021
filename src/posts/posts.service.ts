@@ -29,8 +29,6 @@ export class PostsService {
     const newPost = this.postsRepository.create({
       userId: body.userId,
       content: body.content,
-      //file is optional to create a post
-      file: body.file || '',
     });
     return this.postsRepository.save(newPost);
   }
