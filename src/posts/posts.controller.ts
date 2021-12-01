@@ -30,7 +30,12 @@ export class PostsController {
   //Get all posts, we pass it to the service to find the posts
   @Get()
   async getAllPosts(): Promise<PostsResponseDto[]> {
-    return this.postsService.finAll();
+    return this.postsService.findAll();
+  }
+  //Find the posts by user
+  @Get('/user')
+  async getPostByUser(@Request() req): Promise<any> {
+    return this.postsService.findPostsByUser(req.user.id);
   }
   //Fin a post by its Id, pass the logic to service via findById()
   @Get('/:postId')
@@ -113,11 +118,11 @@ export class PostsController {
     }
   }
   //To delete a file from post
-  @Delete('/:postId/pic')
+  /*@Delete('/:postId/pic')
   async deletePostFile(@Param('postId') postId): Promise<any> {
     const deletedFile = await this.postsService.deleteFile(postId);
     return deletedFile;
-  }
+  }*/
   //To delete one post
   @Delete('/:postId')
   async deletePost(@Param('postId') postId: number): Promise<PostsResponseDto> {

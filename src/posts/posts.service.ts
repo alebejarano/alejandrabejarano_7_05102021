@@ -12,7 +12,7 @@ export class PostsService {
     private postsRepository: Repository<Post>,
   ) {}
   //find all post
-  finAll(): Promise<Post[]> {
+  findAll(): Promise<Post[]> {
     return this.postsRepository.find();
   }
   //find one post by Id
@@ -24,8 +24,16 @@ export class PostsService {
       throw err;
     }
   }
+  //Find posts by the userId
+  async findPostsByUser(userId): Promise<any> {
+    return this.postsRepository.find({
+      relations: ['user'],
+      where: { userId: userId },
+      order: { createdAt: 'DESC' },
+    });
+  }
   //Create one post
-  createPost(body: CreateAndModifyPostDto): Promise<Post> {
+  async createPost(body: CreateAndModifyPostDto): Promise<Post> {
     const newPost = this.postsRepository.create({
       userId: body.userId,
       content: body.content,
@@ -59,7 +67,7 @@ export class PostsService {
     return this.postsRepository.save(post);
   }
   //Delete file from post
-  async deleteFile(postId: number): Promise<Post> {
+  /*async deleteFile(postId: number): Promise<Post> {
     const post = await this.findById(postId);
     //check if there is a file
     if (post.file && post.file.length) {
@@ -79,7 +87,7 @@ export class PostsService {
     post.file = '';
     //return the post with no file
     return this.postsRepository.save(post);
-  }
+  }*/
   //Delete one post
   async deletePost(postId: number): Promise<Post> {
     const postToDelete = await this.findById(postId);

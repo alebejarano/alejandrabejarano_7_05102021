@@ -16,8 +16,11 @@ export class Post {
   @Column()
   userId: number;
 
-  @Column({ length: 800 })
+  @Column({ type: 'text' })
   content: string;
+
+  @Column({ type: 'timestamp', default: () => 'now()' })
+  createdAt: string;
 
   @Column()
   file?: string = '';
