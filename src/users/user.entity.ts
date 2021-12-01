@@ -27,6 +27,9 @@ export class User {
   //empty default value
   profilePic?: string = '';
 
+  @Column('boolean', { default: false })
+  isAdmin: boolean;
+
   @BeforeRemove()
   removeProfilePic() {
     if (this.profilePic && this.profilePic.length) {

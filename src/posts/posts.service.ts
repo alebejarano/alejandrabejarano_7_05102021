@@ -13,7 +13,10 @@ export class PostsService {
   ) {}
   //find all post
   findAll(): Promise<Post[]> {
-    return this.postsRepository.find();
+    return this.postsRepository.find({
+      relations: ['user'],
+      order: { createdAt: 'DESC' },
+    });
   }
   //find one post by Id
   async findById(postId: number): Promise<Post> {
