@@ -11,7 +11,7 @@ export class PostsResponseDto {
   @IsString()
   content: string;
 
-  file?: any;
+  files?: any;
 }
 //Create one post or modify one post
 export class CreateAndModifyPostDto {
@@ -20,5 +20,5 @@ export class CreateAndModifyPostDto {
   @IsString()
   content: string;
 
-  file?: any;
+  files?: any;
 }

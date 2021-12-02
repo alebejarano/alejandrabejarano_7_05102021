@@ -22,22 +22,27 @@ export class Post {
   @Column({ type: 'timestamp', default: () => 'now()' })
   createdAt: string;
 
-  @Column()
-  file?: string = '';
+  @Column('boolean', { default: false })
+  isLiked: boolean;
+
+  @Column('simple-array')
+  files?: string[] = [];
 
   @BeforeRemove()
   removeFile() {
-    if (this.file && this.file.length) {
-      const path = `./files/${this.file}`;
-      console.log('post entity');
-      fs.unlink(path, (err) => {
-        if (err) {
-          throw err;
-        } else {
-          console.log('"Successfully deleted the file."');
-        }
-      });
-    }
+    this.files.forEach((file) => {
+      if (file && file.length) {
+        const path = `./files/${file}`;
+        console.log('post entity');
+        fs.unlink(path, (err) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log('"Successfully deleted the file."');
+          }
+        });
+      }
+    });
   }
 
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })

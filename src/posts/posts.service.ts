@@ -40,6 +40,7 @@ export class PostsService {
     const newPost = this.postsRepository.create({
       userId: body.userId,
       content: body.content,
+      files: body.files,
     });
     return this.postsRepository.save(newPost);
   }
@@ -53,8 +54,8 @@ export class PostsService {
     and if it has a different filename we remove it;
     (if same filename it will be overwritten by multer, 
     so no need to delete)*/
-    if (post.file && post.file.length && filename !== post.file) {
-      const path = `./files/${post.file}`;
+    if (body.files && body.files.length && filename !== body.files) {
+      const path = `./files/${body.files}`;
       console.log('post service updatepost');
       fs.unlink(path, (err) => {
         if (err) {
@@ -65,7 +66,7 @@ export class PostsService {
       });
     }
     //update the file and content for the new one
-    post.file = filename;
+    body.files = filename;
     post.content = body.content;
     return this.postsRepository.save(post);
   }
