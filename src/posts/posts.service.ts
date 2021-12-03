@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAndModifyPostDto } from './dto/posts.dto';
 import { Post } from './post.entity';
-import * as fs from 'fs';
+//import * as fs from 'fs';
 
 @Injectable()
 export class PostsService {
@@ -40,21 +40,17 @@ export class PostsService {
     const newPost = this.postsRepository.create({
       userId: body.userId,
       content: body.content,
-      files: body.files,
+      files: this.getAttrFromString(body.content, 'img', 'src'),
     });
     return this.postsRepository.save(newPost);
   }
   //Modify one post and or the file
-  async updatePost(
-    post: Post,
-    filename: string,
-    body: CreateAndModifyPostDto,
-  ): Promise<any> {
+  async updatePost(post: Post, body: CreateAndModifyPostDto): Promise<any> {
     /*if statement to check if the user already has uploaded a file,
     and if it has a different filename we remove it;
     (if same filename it will be overwritten by multer, 
     so no need to delete)*/
-    if (body.files && body.files.length && filename !== body.files) {
+    /*if (body.files && body.files.length && filename !== body.files) {
       const path = `./files/${body.files}`;
       console.log('post service updatepost');
       fs.unlink(path, (err) => {
@@ -64,9 +60,8 @@ export class PostsService {
           console.log('"Successfully deleted the file."');
         }
       });
-    }
+    }*/
     //update the file and content for the new one
-    body.files = filename;
     post.content = body.content;
     return this.postsRepository.save(post);
   }
@@ -96,5 +91,15 @@ export class PostsService {
   async deletePost(postId: number): Promise<Post> {
     const postToDelete = await this.findById(postId);
     return this.postsRepository.remove(postToDelete);
+  }
+
+  getAttrFromString(str, node, attr) {
+    const regex = new RegExp('<' + node + ' .*?' + attr + '="(.*?)"', 'gi');
+    let result = [];
+    const res = [];
+    while ((result = regex.exec(str))) {
+      res.push(result[1]);
+    }
+    return res;
   }
 }

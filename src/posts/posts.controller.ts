@@ -87,30 +87,16 @@ export class PostsController {
 
   //Modify one post and or the file
   @Patch('/:postId')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './files',
-        filename: editFilename,
-      }),
-      fileFilter: imageFileFilter,
-    }),
-  )
   async modifyPost(
     @Request() req,
     @Param('postId') postId,
-    @UploadedFile() file: Express.Multer.File,
     @Body()
     body: CreateAndModifyPostDto,
   ): Promise<any> {
     const post = await this.postsService.findById(postId);
     //check if the user who wans to modify the post is the one who created it
     if (req.user.id === post.userId) {
-      const modifiedPost = await this.postsService.updatePost(
-        post,
-        file.filename,
-        body,
-      );
+      const modifiedPost = await this.postsService.updatePost(post, body);
       return modifiedPost;
     } else {
       //if it is not the owner of the post
