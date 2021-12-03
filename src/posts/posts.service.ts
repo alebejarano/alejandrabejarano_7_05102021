@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAndModifyPostDto } from './dto/posts.dto';
 import { Post } from './post.entity';
-//import * as fs from 'fs';
+import * as _ from 'lodash';
+import * as fs from 'fs';
 
 @Injectable()
 export class PostsService {
@@ -61,10 +62,25 @@ export class PostsService {
         }
       });
     }*/
+    const updatedFiles = this.getAttrFromString(body.content, 'img', 'src');
+    const filesToDelete = _.difference(post.files, updatedFiles);
+    filesToDelete.forEach((file) => {
+      const path = `./files/${file}`;
+      //console.log('post service updatepost');
+      fs.unlink(path, (err) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log('"Successfully deleted the file."');
+        }
+      });
+    });
     //update the file and content for the new one
     post.content = body.content;
+    post.files = updatedFiles;
     return this.postsRepository.save(post);
   }
+
   //Delete file from post
   /*async deleteFile(postId: number): Promise<Post> {
     const post = await this.findById(postId);
@@ -87,6 +103,7 @@ export class PostsService {
     //return the post with no file
     return this.postsRepository.save(post);
   }*/
+
   //Delete one post
   async deletePost(postId: number): Promise<Post> {
     const postToDelete = await this.findById(postId);
@@ -98,7 +115,7 @@ export class PostsService {
     let result = [];
     const res = [];
     while ((result = regex.exec(str))) {
-      res.push(result[1]);
+      res.push(result[1].split('/file/')[1]);
     }
     return res;
   }
