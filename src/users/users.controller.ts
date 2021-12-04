@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { CreatedUserResponseDto, CreateUserDto } from './dto/users.dto';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcrypt';
@@ -24,13 +24,16 @@ export class UsersController {
     const password = body.password;
     body.password = await bcrypt.hash(password, 10);
     const newUser = await this.usersService.createUser(body);
-    //to auth the new created user to enter the homepage
-    const login = await this.authService.login(newUser);
-    return {
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
-      access_token: login.access_token,
-    };
+    if (newUser) {
+      //to auth the new created user to enter the homepage
+      const login = await this.authService.login(newUser);
+      return {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        access_token: login.access_token,
+      };
+    }
+    throw new BadRequestException();
   }
 }

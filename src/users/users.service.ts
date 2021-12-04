@@ -31,9 +31,14 @@ export class UsersService {
   }
   //To create a new user
   async createUser(data: CreateUserDto): Promise<User> {
-    const newUser = this.usersRepository.create(data);
-    // Insert the new user to the database
-    return this.usersRepository.save(newUser);
+    const user = await this.usersRepository.findOne({ email: data.email });
+    if (user) {
+      console.log('User already exists');
+    } else {
+      const newUser = this.usersRepository.create(data);
+      // Insert the new user to the database
+      return this.usersRepository.save(newUser);
+    }
   }
   //the user can modify his info
   async updateUser(userId: number, data: UpdatedUserDto): Promise<User> {

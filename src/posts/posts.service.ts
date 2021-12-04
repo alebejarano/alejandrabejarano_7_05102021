@@ -82,11 +82,11 @@ export class PostsService {
   }
   //To like or dislike one post
   async likePost(post: Post, userId): Promise<any> {
-    const index = post.likes.indexOf(userId);
-    if (index === -1) {
-      post.likes.push(userId);
+    const like = post.likes.find((like) => like == userId);
+    if (like) {
+      post.likes = post.likes.filter((like) => like != userId);
     } else {
-      post.likes.splice(index, 1);
+      post.likes.push(userId);
     }
     return this.postsRepository.save(post);
   }
