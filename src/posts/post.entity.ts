@@ -22,11 +22,11 @@ export class Post {
   @Column({ type: 'timestamp', default: () => 'now()' })
   createdAt: string;
 
-  @Column('boolean', { default: false })
-  isLiked: boolean;
-
   @Column('simple-array')
   files?: string[] = [];
+
+  @Column('simple-array')
+  likes?: number[] = [];
 
   @BeforeRemove()
   removeFile() {

@@ -103,6 +103,11 @@ export class PostsController {
       throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     }
   }
+  @Post('/:postId/like')
+  async likePost(@Request() req, @Param('postId') postId): Promise<any> {
+    const post = await this.postsService.findById(postId);
+    return await this.postsService.likePost(post, req.user.id);
+  }
   //To delete a file from post
   /*@Delete('/:postId/pic')
   async deletePostFile(@Param('postId') postId): Promise<any> {

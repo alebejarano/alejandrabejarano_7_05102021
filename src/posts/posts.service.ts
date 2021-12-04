@@ -80,7 +80,16 @@ export class PostsService {
     post.files = updatedFiles;
     return this.postsRepository.save(post);
   }
-
+  //To like or dislike one post
+  async likePost(post: Post, userId): Promise<any> {
+    const index = post.likes.indexOf(userId);
+    if (index === -1) {
+      post.likes.push(userId);
+    } else {
+      post.likes.splice(index, 1);
+    }
+    return this.postsRepository.save(post);
+  }
   //Delete file from post
   /*async deleteFile(postId: number): Promise<Post> {
     const post = await this.findById(postId);
