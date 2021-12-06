@@ -26,7 +26,7 @@ export class Post {
   files?: string[] = [];
 
   @Column('simple-array')
-  likes?: number[];
+  likes?: number[] = [];
 
   @BeforeRemove()
   removeFile() {
