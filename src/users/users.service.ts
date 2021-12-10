@@ -5,8 +5,9 @@ import { User } from './user.entity';
 import { CreateUserDto, UpdatedUserDto } from './dto/users.dto';
 import * as fs from 'fs';
 
-@Injectable()
+@Injectable() //Decorator that marks a TypeScript class a provider (service)
 export class UsersService {
+  //repositories can be accessed through Dependency Injection
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,

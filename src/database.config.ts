@@ -6,6 +6,7 @@ import { TypeOrmOptionsFactory } from '@nestjs/typeorm';
 export class DatabaseConfig implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
   createTypeOrmOptions() {
+    //get a  environment variable
     return this.configService.get('database');
   }
 }

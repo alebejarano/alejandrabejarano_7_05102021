@@ -11,6 +11,7 @@ import { AuthService } from 'src/auth/auth.service';
 //for Creating a new user, in the signup page
 export class UsersController {
   constructor(
+    //Service available through Dependency Injection
     private usersService: UsersService,
     //we pass our authorization logic, validating users password
     //and for login returning the token

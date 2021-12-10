@@ -9,6 +9,8 @@ import { DatabaseConfig } from './database.config';
 import { AppController } from './app.controller';
 import { MulterModule } from '@nestjs/platform-express';
 
+// Modules are the basic building block of a Nestjs application
+//and are used to group related features like controllers and services together.
 @Module({
   imports: [
     //load and parse a .env file

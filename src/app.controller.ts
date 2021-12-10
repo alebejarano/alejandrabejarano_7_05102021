@@ -23,5 +23,6 @@ export class AppController {
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
+    //returns the id and email of the connected user
   }
 }

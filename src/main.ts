@@ -13,6 +13,7 @@ async function bootstrap() {
   //security HTTP headers
   app.use(helmet());
   //pipes applied to every route handler across the entire application.
+  //Ensuring all endpoints are protected from receiving incorrect data.
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(port);
 }
