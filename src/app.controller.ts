@@ -5,7 +5,7 @@ import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 @Controller()
 export class AppController {
   constructor(private readonly authService: AuthService) {}
-
+  //pass our localAuthguard class
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
@@ -17,11 +17,4 @@ export class AppController {
     "email"
     */
   }
-
-  /*@UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-    //returns the id and email of the user
-  }*/
 }

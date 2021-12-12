@@ -4,6 +4,7 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
+//AuthService has the job of retrieving a user and verifying the password.
 @Injectable()
 export class AuthService {
   constructor(
@@ -16,6 +17,7 @@ export class AuthService {
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (isMatch) {
+        //spread operator to strip the password property from the user object before returning it
         const { password, ...rest } = user;
         return rest;
       }
