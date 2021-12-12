@@ -31,6 +31,14 @@
 ```bash
 $ npm install
 ```
+### Configure JWT token
+
+Generate SSH key:
+```bash
+$ ssh-keygen -t rsa -b 4096
+$ pbcopy < ~/.ssh/[key_name].pub
+```
+Paste the key in the `JWT_SECRET` environnment variable.
 
 ## Running the app
 
