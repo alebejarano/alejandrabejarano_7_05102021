@@ -61,4 +61,5 @@ export class CreatedUserResponseDto {
   access_token: string;
 }
 //Update the user info
+//all the properties of the input type set to optional
 export class UpdatedUserDto extends PartialType(CreateUserDto) {}
