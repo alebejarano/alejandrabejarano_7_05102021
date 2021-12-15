@@ -26,6 +26,7 @@ import { editFilename, imageFileFilter } from 'src/file-upload.utils';
 @Controller('posts')
 @UseGuards(JwtAuthGuard)
 export class PostsController {
+  // declare and initialize the Service
   constructor(private postsService: PostsService) {}
   //Get all posts, we pass it to the service to find the posts
   @Get()
