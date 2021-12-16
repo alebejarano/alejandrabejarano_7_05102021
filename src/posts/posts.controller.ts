@@ -115,7 +115,7 @@ export class PostsController {
     @Request() req,
     @Param('postId') postId: number,
   ): Promise<PostsResponseDto> {
-    const deletedPost = await this.postsService.deletePost(req.user.id, postId);
+    const deletedPost = await this.postsService.deletePost(postId, req.user.id);
     return deletedPost;
   }
 

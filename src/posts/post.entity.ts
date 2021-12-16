@@ -50,8 +50,6 @@ export class Post {
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.post, {
-    onDelete: 'CASCADE',
-  })
+  @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
 }

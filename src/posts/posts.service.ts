@@ -37,7 +37,7 @@ export class PostsService {
   //Find posts by the userId
   async findPostsByUser(userId): Promise<any> {
     return this.postsRepository.find({
-      relations: ['user'],
+      relations: ['user', 'comments', 'comments.user'],
       where: { userId: userId },
       order: { createdAt: 'DESC' },
     });
