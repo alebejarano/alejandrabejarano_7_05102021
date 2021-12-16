@@ -111,8 +111,11 @@ export class PostsController {
   }
   //To delete one post
   @Delete('/:postId')
-  async deletePost(@Param('postId') postId: number): Promise<PostsResponseDto> {
-    const deletedPost = await this.postsService.deletePost(postId);
+  async deletePost(
+    @Request() req,
+    @Param('postId') postId: number,
+  ): Promise<PostsResponseDto> {
+    const deletedPost = await this.postsService.deletePost(req.user.id, postId);
     return deletedPost;
   }
 

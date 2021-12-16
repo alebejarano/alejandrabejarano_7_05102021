@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateAndModifyPostDto, CreateCommentDto } from './dto/posts.dto';
@@ -21,7 +21,7 @@ export class PostsService {
   //find all post
   findAll(): Promise<Post[]> {
     return this.postsRepository.find({
-      relations: ['user'],
+      relations: ['user', 'comments', 'comments.user'],
       order: { createdAt: 'DESC' },
     });
   }
@@ -98,9 +98,17 @@ export class PostsService {
   }
 
   //Delete one post
-  async deletePost(postId: number): Promise<Post> {
-    const postToDelete = await this.findById(postId);
-    return this.postsRepository.remove(postToDelete);
+  async deletePost(postId: number, userId: number): Promise<Post> {
+    try {
+      const postToDelete = await this.findById(postId);
+      const user = await this.usersRepository.findOneOrFail(userId);
+      if (postToDelete.userId === userId || user.isAdmin) {
+        return this.postsRepository.remove(postToDelete);
+      }
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    } catch (err) {
+      throw err;
+    }
   }
 
   //create a comment
@@ -125,6 +133,7 @@ export class PostsService {
       if (comment.userId === userId || user.isAdmin) {
         return this.commentsRepository.remove(comment);
       }
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     } catch (err) {
       throw err;
     }
