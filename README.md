@@ -38,7 +38,7 @@ Generate SSH key:
 $ ssh-keygen -t rsa -b 4096
 $ pbcopy < ~/.ssh/[key_name].pub
 ```
-Paste the key in the `JWT_SECRET` environnment variable.
+Paste the key in the `APP_SECRET` environnment variable.
 
 ## Running the app
 

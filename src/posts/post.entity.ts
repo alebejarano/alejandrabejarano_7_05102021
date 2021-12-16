@@ -5,8 +5,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   BeforeRemove,
+  OneToMany,
 } from 'typeorm';
 import * as fs from 'fs';
+import { Comment } from './comment.entity';
 
 @Entity()
 export class Post {
@@ -47,4 +49,9 @@ export class Post {
 
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
   user: User;
+
+  @OneToMany(() => Comment, (comment) => comment.post, {
+    onDelete: 'CASCADE',
+  })
+  comments: Comment[];
 }

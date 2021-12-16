@@ -7,6 +7,7 @@ import {
   BeforeRemove,
 } from 'typeorm';
 import * as fs from 'fs';
+import { Comment } from 'src/posts/comment.entity';
 
 //Entity is a class that maps to a database table
 @Entity()
@@ -47,4 +48,9 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.userId)
   posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.user, {
+    onDelete: 'CASCADE',
+  })
+  comments: Comment[];
 }

@@ -1,16 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateAndModifyPostDto } from './dto/posts.dto';
+import { CreateAndModifyPostDto, CreateCommentDto } from './dto/posts.dto';
 import { Post } from './post.entity';
 import * as _ from 'lodash';
 import * as fs from 'fs';
+import { Comment } from './comment.entity';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Post)
     private postsRepository: Repository<Post>,
+    @InjectRepository(Comment)
+    private commentsRepository: Repository<Comment>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
   ) {}
   //find all post
   findAll(): Promise<Post[]> {
@@ -90,28 +96,6 @@ export class PostsService {
     }
     return this.postsRepository.save(post);
   }
-  //Delete file from post
-  /*async deleteFile(postId: number): Promise<Post> {
-    const post = await this.findById(postId);
-    //check if there is a file
-    if (post.file && post.file.length) {
-      const path = `./files/${post.file}`;
-      //if there is a file delete it from folder
-      console.log('users service, deletefile');
-      fs.unlink(path, (err) => {
-        if (err) {
-          throw err;
-        } else {
-          console.log('"Successfully deleted the file."');
-        }
-      });
-    } else {
-      console.log('no file to delete');
-    }
-    post.file = '';
-    //return the post with no file
-    return this.postsRepository.save(post);
-  }*/
 
   //Delete one post
   async deletePost(postId: number): Promise<Post> {
@@ -119,6 +103,34 @@ export class PostsService {
     return this.postsRepository.remove(postToDelete);
   }
 
+  //create a comment
+  async createComment(
+    post: Post,
+    userId: number,
+    body: CreateCommentDto,
+  ): Promise<any> {
+    const comment = this.commentsRepository.create({
+      content: body.content,
+      postId: post.id,
+      userId: userId,
+    });
+    return this.commentsRepository.save(comment);
+  }
+
+  //To delete a comment
+  async deleteComment(userId: number, commentId) {
+    try {
+      const comment = await this.commentsRepository.findOneOrFail(commentId);
+      const user = await this.usersRepository.findOneOrFail(userId);
+      if (comment.userId === userId || user.isAdmin) {
+        return this.commentsRepository.remove(comment);
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  //to get the file from our string handed by quill, thata contains our file, so we can delete from our static folder
   getAttrFromString(str, node, attr) {
     const regex = new RegExp('<' + node + ' .*?' + attr + '="(.*?)"', 'gi');
     let result = [];

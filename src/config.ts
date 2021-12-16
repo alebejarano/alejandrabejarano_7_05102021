@@ -1,3 +1,4 @@
+import { Comment } from './posts/comment.entity';
 import { Post } from './posts/post.entity';
 import { User } from './users/user.entity';
 
@@ -11,6 +12,6 @@ export const config = () => ({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
     synchronize: true,
-    entities: [User, Post],
+    entities: [User, Post, Comment],
   },
 });

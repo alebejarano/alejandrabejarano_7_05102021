@@ -109,16 +109,28 @@ export class PostsController {
     const post = await this.postsService.findById(postId);
     return await this.postsService.likePost(post, req.user.id);
   }
-  //To delete a file from post
-  /*@Delete('/:postId/pic')
-  async deletePostFile(@Param('postId') postId): Promise<any> {
-    const deletedFile = await this.postsService.deleteFile(postId);
-    return deletedFile;
-  }*/
   //To delete one post
   @Delete('/:postId')
   async deletePost(@Param('postId') postId: number): Promise<PostsResponseDto> {
     const deletedPost = await this.postsService.deletePost(postId);
     return deletedPost;
+  }
+
+  //For the comments
+  @Post('/:postId/comment')
+  async createComment(@Request() req, @Param('postId') postId): Promise<any> {
+    const post = await this.postsService.findById(postId);
+    return await this.postsService.createComment(post, req.user.id, req.body);
+  }
+  @Delete('/comments/:commentId')
+  async deleteComment(
+    @Request() req,
+    @Param('commentId') commentId,
+  ): Promise<any> {
+    const deletedComment = this.postsService.deleteComment(
+      req.user.id,
+      commentId,
+    );
+    return deletedComment;
   }
 }

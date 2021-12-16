@@ -22,3 +22,8 @@ export class CreateAndModifyPostDto {
 
   files?: any;
 }
+
+export class CreateCommentDto {
+  @IsString()
+  content: string;
+}
