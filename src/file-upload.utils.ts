@@ -19,6 +19,6 @@ export const editFilename = (req, file, callback) => {
   const name = file.originalname.split(' ').join('_');
   //to deal with the white space and to be replace by _
   const extension = MIME_TYPES[file.mimetype];
-  callback(null, name, +Date.now() + '.' + extension);
+  callback(null, name + '_' + Date.now() + '.' + extension);
   //we add the date to avoid overwritten files
 };

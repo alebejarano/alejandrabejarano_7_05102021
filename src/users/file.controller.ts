@@ -3,7 +3,7 @@ import { createReadStream } from 'fs';
 
 @Controller('file')
 export class fileController {
-  //to get the profile pic
+  //to get the file
   @Get('/:filename')
   async getFile(@Param('filename') filename): Promise<StreamableFile> {
     const file = createReadStream(`./files/${filename}`);
