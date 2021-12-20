@@ -8,6 +8,7 @@ import { config } from './config';
 import { DatabaseConfig } from './database.config';
 import { AppController } from './app.controller';
 import { MulterModule } from '@nestjs/platform-express';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 // Modules are the basic building block of a Nestjs application
 //and are used to group related features like controllers and services together.
@@ -21,6 +22,11 @@ import { MulterModule } from '@nestjs/platform-express';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useClass: DatabaseConfig,
+    }),
+    //to protect from brute-force attacks
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 2,
     }),
     MulterModule.register({
       dest: './files',
