@@ -62,13 +62,15 @@ export class UsersService {
     ) {
       const path = `./files/${user.profilePic}`;
       console.log('users service, updateprofilepic');
-      fs.unlink(path, (err) => {
-        if (err) {
-          throw err;
-        } else {
-          console.log('"Successfully deleted the file."');
-        }
-      });
+      if (fs.existsSync(path)) {
+        fs.unlink(path, (err) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log('"Successfully deleted the file."');
+          }
+        });
+      }
     }
     user.profilePic = filename;
     this.usersRepository.save(user);
@@ -81,13 +83,15 @@ export class UsersService {
     if (user.profilePic && user.profilePic.length) {
       const path = `./files/${user.profilePic}`;
       console.log('users service, delete profile pic');
-      fs.unlink(path, (err) => {
-        if (err) {
-          throw err;
-        } else {
-          console.log('"Successfully deleted the file."');
-        }
-      });
+      if (fs.existsSync(path)) {
+        fs.unlink(path, (err) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log('"Successfully deleted the file."');
+          }
+        });
+      }
     } else {
       console.log('no profile pic to delete');
     }

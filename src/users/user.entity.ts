@@ -36,13 +36,15 @@ export class User {
     if (this.profilePic && this.profilePic.length) {
       const path = `./files/${this.profilePic}`;
       console.log('users entity');
-      fs.unlink(path, (err) => {
-        if (err) {
-          throw err;
-        } else {
-          console.log('"Successfully deleted the file."');
-        }
-      });
+      if (fs.existsSync(path)) {
+        fs.unlink(path, (err) => {
+          if (err) {
+            throw err;
+          } else {
+            console.log('"Successfully deleted the file."');
+          }
+        });
+      }
     }
   }
 

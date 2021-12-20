@@ -36,13 +36,15 @@ export class Post {
       if (file && file.length) {
         const path = `./files/${file}`;
         console.log('post entity');
-        fs.unlink(path, (err) => {
-          if (err) {
-            throw err;
-          } else {
-            console.log('"Successfully deleted the file."');
-          }
-        });
+        if (fs.existsSync(path)) {
+          fs.unlink(path, (err) => {
+            if (err) {
+              throw err;
+            } else {
+              console.log('"Successfully deleted the file."');
+            }
+          });
+        }
       }
     });
   }
