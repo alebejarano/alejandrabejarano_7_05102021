@@ -4,6 +4,7 @@ import { User } from './users/user.entity';
 
 //configuration file, that returns an object
 export const config = () => ({
+  appUrl: process.env.APP_URL,
   database: {
     type: 'mysql',
     host: process.env.DATABASE_HOST,

@@ -22,12 +22,16 @@ import { PostsService } from './posts.service';
 import { Express } from 'express';
 import { diskStorage } from 'multer';
 import { editFilename, imageFileFilter } from 'src/file-upload.utils';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('posts')
 @UseGuards(JwtAuthGuard)
 export class PostsController {
   // declare and initialize the Service
-  constructor(private postsService: PostsService) {}
+  constructor(
+    private postsService: PostsService,
+    private configService: ConfigService,
+  ) {}
   //Get all posts, we pass it to the service to find the posts
   @Get()
   async getAllPosts(): Promise<PostsResponseDto[]> {
@@ -75,7 +79,7 @@ export class PostsController {
   )
   async uploadImage(@UploadedFile() file: Express.Multer.File): Promise<any> {
     return {
-      url: `http://localhost:3000/file/${file.filename}`,
+      url: `${this.configService.get('appUrl')}/file/${file.filename}`,
     };
   }
 
